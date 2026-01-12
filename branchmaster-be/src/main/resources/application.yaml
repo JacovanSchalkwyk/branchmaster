@@ -1,0 +1,35 @@
+logging:
+  level:
+    root: INFO
+    branchmaster: TRACE
+    org.flywaydb: DEBUG
+    org.springframework.boot.autoconfigure.flyway: DEBUG
+    org.springframework.cache: TRACE
+    org.springframework.cache.interceptor: TRACE
+spring:
+  # Add additional Spring config here
+
+  threads:
+    virtual:
+      enabled: true
+
+  flyway:
+    placeholders:
+      seed_demo_data: true
+    enabled: true
+    default-schema: branch_master
+    schemas: branch_master
+    create-schemas: true
+
+  datasource:
+    username: branchmaster
+    password: branchmaster
+    url: jdbc:postgresql://localhost:5432/branchmaster
+
+app:
+  jwt:
+    secret: change-me-to-a-long-random-secret-change-me-change-me
+    issuer: example-app
+    ttlMinutes: 240
+  staff:
+    sharedKey: admin
