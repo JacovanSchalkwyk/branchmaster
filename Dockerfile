@@ -1,24 +1,18 @@
-# =========================
-# 1) Build Frontend
-# =========================
 FROM node:20-alpine AS fe-build
 WORKDIR /fe
 
 COPY branchmaster-fe/package*.json ./
-RUN npm ci
+
+RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
 
 COPY branchmaster-fe/ ./
 RUN npm run build
 
-# =========================
-# 2) Frontend Runtime (SPA fallback, NO nginx)
-# =========================
 FROM node:20-alpine AS frontend
 WORKDIR /app
 
 RUN npm install -g serve
 
-# Copy entire FE project output (so we don't fail if dist/build doesn't exist)
 COPY --from=fe-build /fe ./_fe_out
 
 EXPOSE 5173
@@ -37,21 +31,15 @@ CMD sh -lc '\
   fi \
 '
 
-
-# =========================
-# 3) Build Backend
-# =========================
 FROM maven:3.9.9-eclipse-temurin-21 AS be-build
 WORKDIR /be
 
-COPY branchmaster/pom.xml ./
-COPY branchmaster/src ./src
+COPY branchmaster-be/pom.xml ./
+COPY branchmaster-be/src ./src
 
 RUN mvn -q -DskipTests package
 
-# =========================
-# 4) Backend Runtime
-# =========================
+
 FROM eclipse-temurin:21-jre AS backend
 WORKDIR /app
 
