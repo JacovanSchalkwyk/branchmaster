@@ -1,17 +1,20 @@
 package branchmaster.admin.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Builder;
 
 @Builder
 public record CreateBranchRequest(
-    String name,
-    String address,
+    @NotBlank String name,
+    @NotBlank String address,
     String suburb,
-    String city,
-    String province,
-    String postalCode,
-    Boolean active,
-    Integer timeslotLength,
-    Double latitude,
-    Double longitude,
-    String country) {}
+    @NotBlank String city,
+    @NotBlank String province,
+    @NotBlank String postalCode,
+    @NotNull Boolean active,
+    @PositiveOrZero Integer timeslotLength,
+    @NotNull Double latitude,
+    @NotNull Double longitude,
+    @NotBlank String country) {}

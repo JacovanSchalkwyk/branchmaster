@@ -11,6 +11,8 @@ import branchmaster.service.ResourceService;
 import branchmaster.service.model.ResourceAvailabilityDto;
 import branchmaster.service.model.ResourceUnavailabilityDto;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +38,7 @@ public class ResourceAdminControllerV1 {
 
   @GetMapping(path = "/resource/available/{branchId}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<ResourceAvailabilityResponse>> getAvailableResourcesForBranch(
-      @PathVariable Long branchId) {
+      @PathVariable @NotNull @PositiveOrZero Long branchId) {
     try {
       List<ResourceAvailabilityDto> resources =
           resourceService.getAvailableResourcesForBranch(branchId);
@@ -93,7 +95,8 @@ public class ResourceAdminControllerV1 {
   @DeleteMapping(
       path = "/resource/available/{resourceId}",
       produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Void> deleteAvailableResourcesForBranch(@PathVariable Long resourceId) {
+  public ResponseEntity<Void> deleteAvailableResourcesForBranch(
+      @PathVariable @NotNull @PositiveOrZero Long resourceId) {
     try {
       resourceService.deleteResourceAvailability(resourceId);
       return ResponseEntity.status(HttpStatus.OK).build();
@@ -108,7 +111,7 @@ public class ResourceAdminControllerV1 {
       path = "/resource/unavailable/{branchId}",
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<ResourceUnavailabilityResponse>> getUnavailableResourcesForBranch(
-      @PathVariable Long branchId) {
+      @PathVariable @NotNull @PositiveOrZero Long branchId) {
     try {
       List<ResourceUnavailabilityDto> resources =
           resourceService.getUnavailableResourcesForBranch(branchId);
@@ -163,7 +166,8 @@ public class ResourceAdminControllerV1 {
   @DeleteMapping(
       path = "/resource/unavailable/{resourceId}",
       produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Void> deleteResourceUnavailability(@PathVariable Long resourceId) {
+  public ResponseEntity<Void> deleteResourceUnavailability(
+      @PathVariable @NotNull @PositiveOrZero Long resourceId) {
     try {
       resourceService.deleteResourceUnavailability(resourceId);
       return ResponseEntity.status(HttpStatus.OK).build();

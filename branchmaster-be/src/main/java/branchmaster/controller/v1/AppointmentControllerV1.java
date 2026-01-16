@@ -7,6 +7,8 @@ import branchmaster.service.AppointmentService;
 import branchmaster.service.model.AppointmentDto;
 import branchmaster.service.model.Timeslot;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -34,9 +36,14 @@ public class AppointmentControllerV1 {
 
   @GetMapping(path = "available/{branchId}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Map<LocalDate, List<Timeslot>>> getAvailableAppointmentsForBranch(
-      @PathVariable Long branchId,
-      @RequestParam("startDate") LocalDate startDate,
-      @RequestParam("endDate") LocalDate endDate) {
+      @PathVariable @NotNull @PositiveOrZero Long branchId,
+      @RequestParam("startDate") @NotNull LocalDate startDate,
+      @RequestParam("endDate") @NotNull LocalDate endDate) {
+
+    if (endDate.isBefore(startDate)) {
+      throw new IllegalArgumentException("endDate must be on/after startDate");
+    }
+
     try {
       Map<LocalDate, List<Timeslot>> response =
           appointmentService.getAvailableAppointments(branchId, startDate, endDate);
@@ -62,7 +69,8 @@ public class AppointmentControllerV1 {
   }
 
   @DeleteMapping(path = "/{bookingId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Void> cancelBooking(@PathVariable("bookingId") Long bookingId) {
+  public ResponseEntity<Void> cancelBooking(
+      @PathVariable("bookingId") @NotNull @PositiveOrZero Long bookingId) {
     try {
       appointmentService.cancelAppointment(bookingId);
 

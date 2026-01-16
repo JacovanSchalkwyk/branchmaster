@@ -18,6 +18,7 @@ import branchmaster.service.model.BranchDto;
 import branchmaster.service.model.BranchOperatingHoursDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +58,8 @@ public class BranchAdminControllerV1 {
 
   @GetMapping(path = "/branch/{branchId}/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<AppointmentResponse>> getBookingsForBranchDay(
-      @PathVariable Long branchId, @RequestParam("date") @NotNull LocalDate date) {
+      @PathVariable @NotNull @PositiveOrZero Long branchId,
+      @RequestParam("date") @NotNull LocalDate date) {
     try {
       List<AppointmentDto> response = appointmentService.getBookingsForBranchDay(branchId, date);
 
@@ -70,7 +72,8 @@ public class BranchAdminControllerV1 {
   }
 
   @GetMapping(path = "/branch/{branchId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<BranchAdminResponse> getBranchDetails(@PathVariable Long branchId) {
+  public ResponseEntity<BranchAdminResponse> getBranchDetails(
+      @PathVariable @NotNull @PositiveOrZero Long branchId) {
     try {
       BranchDto response = branchService.getBranchDetailsAdmin(branchId);
       return ResponseEntity.status(HttpStatus.OK).body(BranchAdminV1Mapper.INSTANCE.map(response));
@@ -85,7 +88,7 @@ public class BranchAdminControllerV1 {
       path = "/branch/{branchId}/operating-hours",
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<BranchOperatingHoursResponse>> getBranchOperatingHours(
-      @PathVariable Long branchId) {
+      @PathVariable @NotNull @PositiveOrZero Long branchId) {
     try {
       List<BranchOperatingHoursDto> operatingHoursDtos =
           branchOperatingHoursService.getOperatingHoursForBranch(branchId);
