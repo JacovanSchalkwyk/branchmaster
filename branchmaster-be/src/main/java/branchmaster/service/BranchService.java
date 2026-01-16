@@ -2,11 +2,14 @@ package branchmaster.service;
 
 import branchmaster.admin.model.CreateBranchRequest;
 import branchmaster.admin.model.UpdateBranchRequest;
+import branchmaster.audit.AdminActionAuditService;
+import branchmaster.audit.entity.ActionType;
 import branchmaster.repository.BranchRepository;
 import branchmaster.repository.entity.BranchEntity;
 import branchmaster.service.mapper.BranchMapper;
 import branchmaster.service.model.BranchDto;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Service;
 public class BranchService {
 
   private final BranchRepository branchRepository;
+  private final AdminActionAuditService auditService;
 
   public List<BranchDto> getAllOpenBranches() {
     List<BranchEntity> branchEntities = branchRepository.getAllActiveBranchesSorted();
@@ -60,6 +64,8 @@ public class BranchService {
       throw new RuntimeException("No branch found");
     }
 
+    var beforeSnapshot = getSnapshot(branchEntity);
+
     branchEntity.setName(req.name());
     branchEntity.setAddress(req.address());
     branchEntity.setSuburb(req.suburb());
@@ -72,6 +78,11 @@ public class BranchService {
     branchEntity.setLongitude(req.longitude());
 
     branchRepository.save(branchEntity);
+
+    var afterSnapshot = getSnapshot(branchEntity);
+
+    auditService.log(
+        ActionType.UPDATE_BRANCH, Map.of("before", beforeSnapshot, "after", afterSnapshot));
 
     return BranchMapper.INSTANCE.map(branchEntity);
   }
@@ -93,6 +104,24 @@ public class BranchService {
 
     branchRepository.save(branchEntity);
 
+    var afterSnapshot = getSnapshot(branchEntity);
+
+    auditService.log(ActionType.CREATE_BRANCH, Map.of("after", afterSnapshot));
+
     return BranchMapper.INSTANCE.map(branchEntity);
+  }
+
+  private Object getSnapshot(BranchEntity branchEntity) {
+    return Map.of(
+        "id", branchEntity.getId(),
+        "address", branchEntity.getAddress(),
+        "suburb", branchEntity.getSuburb(),
+        "city", branchEntity.getCity(),
+        "province", branchEntity.getProvince(),
+        "postalCode", branchEntity.getPostalCode(),
+        "active", branchEntity.getActive(),
+        "timeslotDuration", branchEntity.getTimeslotLength(),
+        "latitude", branchEntity.getLatitude(),
+        "longitude", branchEntity.getLongitude());
   }
 }

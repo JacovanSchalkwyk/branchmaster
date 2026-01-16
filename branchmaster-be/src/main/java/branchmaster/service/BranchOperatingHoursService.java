@@ -6,7 +6,6 @@ import branchmaster.audit.AdminActionAuditService;
 import branchmaster.audit.entity.ActionType;
 import branchmaster.repository.BranchOperatingHoursRepository;
 import branchmaster.repository.entity.BranchOperatingHoursEntity;
-import branchmaster.security.StaffAuthUtil;
 import branchmaster.service.mapper.BranchOperatingHoursMapper;
 import branchmaster.service.model.BranchOperatingHoursDto;
 import java.util.ArrayList;
@@ -43,16 +42,7 @@ public class BranchOperatingHoursService {
       throw new RuntimeException("Branch operating hours not found");
     }
 
-    var beforeSnapshot =
-        Map.of(
-            "id", before.getId(),
-            "branchId", before.getBranchId(),
-            "dayOfWeek", before.getDayOfWeek(),
-            "openingTime",
-                before.getOpeningTime() != null ? before.getOpeningTime().toString() : null,
-            "closingTime",
-                before.getClosingTime() != null ? before.getClosingTime().toString() : null,
-            "closed", before.getClosed());
+    var beforeSnapshot = getSnapshot(before);
 
     before.setOpeningTime(req.openingTime());
     before.setClosingTime(req.closingTime());
@@ -61,31 +51,11 @@ public class BranchOperatingHoursService {
 
     branchOperatingHoursRepository.save(before);
 
-    var afterSnapshot =
-        Map.of(
-            "id", before.getId(),
-            "branchId", before.getBranchId(),
-            "dayOfWeek", before.getDayOfWeek(),
-            "openingTime",
-                before.getOpeningTime() != null ? before.getOpeningTime().toString() : null,
-            "closingTime",
-                before.getClosingTime() != null ? before.getClosingTime().toString() : null,
-            "closed", before.getClosed());
-
-    Long staffId = StaffAuthUtil.getStaffId();
+    var afterSnapshot = getSnapshot(before);
 
     auditService.log(
-        staffId,
-        ActionType.OPERATING_HOURS_UPDATED,
-        Map.of(
-            "operatingHoursId",
-            req.id(),
-            "branchId",
-            before.getBranchId(),
-            "before",
-            beforeSnapshot,
-            "after",
-            afterSnapshot));
+        ActionType.UPDATE_BRANCH_OPERATING_HOURS,
+        Map.of("before", beforeSnapshot, "after", afterSnapshot));
   }
 
   public BranchOperatingHoursDto createBranchOperatingHour(CreateBranchOperatingHoursRequest req) {
@@ -97,6 +67,28 @@ public class BranchOperatingHoursService {
     entity.setOpeningTime(req.openingTime());
     entity.setClosingTime(req.closingTime());
 
-    return BranchOperatingHoursMapper.INSTANCE.map(branchOperatingHoursRepository.save(entity));
+    entity = branchOperatingHoursRepository.save(entity);
+
+    var afterSnapshot = getSnapshot(entity);
+
+    auditService.log(ActionType.CREATE_BRANCH_OPERATING_HOURS, Map.of("after", afterSnapshot));
+
+    return BranchOperatingHoursMapper.INSTANCE.map(entity);
+  }
+
+  private Object getSnapshot(BranchOperatingHoursEntity before) {
+    return Map.of(
+        "id",
+        before.getId(),
+        "branchId",
+        before.getBranchId(),
+        "dayOfWeek",
+        before.getDayOfWeek(),
+        "openingTime",
+        before.getOpeningTime(),
+        "closingTime",
+        before.getClosingTime(),
+        "closed",
+        before.getClosed());
   }
 }

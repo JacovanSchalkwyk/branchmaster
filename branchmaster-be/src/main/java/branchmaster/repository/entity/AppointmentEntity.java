@@ -1,6 +1,8 @@
 package branchmaster.repository.entity;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -17,7 +19,7 @@ import org.springframework.data.relational.core.mapping.Table;
 public class AppointmentEntity {
   @Id private Long id;
 
-  @NotNull private Long branchId;
+  @NotNull @PositiveOrZero private Long branchId;
 
   @NotNull private LocalDate appointmentDate;
 
@@ -32,6 +34,8 @@ public class AppointmentEntity {
   private String reason;
   private String email;
   private String phoneNumber;
-  private String name;
-  private Long resourceAvailabilityId;
+
+  @NotBlank private String name;
+
+  private @NotNull @PositiveOrZero Long resourceAvailabilityId;
 }
