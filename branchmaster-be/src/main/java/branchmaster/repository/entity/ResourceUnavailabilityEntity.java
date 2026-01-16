@@ -17,7 +17,7 @@ import org.springframework.data.relational.core.mapping.Table;
 public class ResourceUnavailabilityEntity {
   @Id private Long id;
 
-  private Long availableResourceId;
+  @NotNull private Long availableResourceId;
 
   @NotNull private Long branchId;
 

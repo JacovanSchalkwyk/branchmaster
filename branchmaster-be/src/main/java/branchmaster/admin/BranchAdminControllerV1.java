@@ -10,7 +10,6 @@ import branchmaster.admin.model.CreateBranchOperatingHoursRequest;
 import branchmaster.admin.model.CreateBranchRequest;
 import branchmaster.admin.model.UpdateBranchOperatingHoursRequest;
 import branchmaster.admin.model.UpdateBranchRequest;
-import branchmaster.audit.AdminActionAuditService;
 import branchmaster.service.AppointmentService;
 import branchmaster.service.BranchOperatingHoursService;
 import branchmaster.service.BranchService;
@@ -44,7 +43,6 @@ public class BranchAdminControllerV1 {
   private final BranchService branchService;
   private final BranchOperatingHoursService branchOperatingHoursService;
   private final AppointmentService appointmentService;
-  private final AdminActionAuditService auditService;
 
   @GetMapping(path = "/branch", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<BranchAdminResponse>> getBranchList() {

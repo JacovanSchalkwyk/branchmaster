@@ -22,4 +22,10 @@ public interface BranchV1Mapper {
       expression = "java(AddressUtils.buildFriendlyAddress(branch))")
   @Mapping(source = "id", target = "branchId")
   BranchResponse map(BranchDto branch);
+
+  @Mapping(
+      target = "friendlyAddress",
+      expression = "java(AddressUtils.buildFriendlyAddress(branch))")
+  @Mapping(source = "id", target = "branchId")
+  BranchMinimalResponse mapMinimal(BranchDto branch);
 }

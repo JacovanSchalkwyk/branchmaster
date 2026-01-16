@@ -150,6 +150,7 @@ public class ResourceService {
     } catch (Exception e) {
       log.error(
           "Something went wrong when deleting resource unavailability, id=[{}]", resourceId, e);
+      throw e;
     }
   }
 }
