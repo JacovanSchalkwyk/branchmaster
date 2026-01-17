@@ -112,6 +112,15 @@ Administrators can manage the entire system via the admin portal:
 
 ---
 
+## Testing
+
+- Unit test coverage: **84% line coverage**
+- Coverage measured using **IntelliJ IDEA coverage runner**
+- Tests focus on controller and service layers
+
+---
+
+
 ## Admin Login Credentials
 
 Use the following credentials to log in as an administrator:
