@@ -40,6 +40,7 @@ This command will:
 
 - **Frontend:** http://localhost:5173
 - **Backend:** http://localhost:8080
+- **API Documentation (Swagger UI):** http://localhost:8080/swagger-ui.html
 - **Database:** localhost:5432
 
 Ensure no other applications are using these ports.
