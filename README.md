@@ -113,6 +113,50 @@ Administrators can manage the entire system via the admin portal:
 
 ---
 
+## Screenshots
+
+### Branch Selection & Search
+Users can search for branches using any available branch information (name, address, postal code, city, country) or select from a quick-pick list.
+
+![Branch search and selection](screenshots/branch-search.png)
+
+---
+
+### Availability Calendar
+After selecting a branch, users are shown a calendar view displaying available booking slots generated from branch operating hours and resource availability.
+
+![Availability calendar](screenshots/availability-calendar.png)
+
+---
+
+### Create Appointment
+Users select a time slot and provide basic personal information to create a booking.
+
+![Create appointment](screenshots/create-appointment.png)
+
+---
+
+### Booking Confirmation
+After a successful booking, users are shown a confirmation page with appointment details, options to cancel or book another appointment, and a Google Maps link for navigation to the branch.
+
+![Booking confirmation](screenshots/booking-confirmation.png)
+
+---
+
+### Admin – Branch Management
+Administrators can view, create, and edit branches from the admin portal.
+
+![Admin branch management](screenshots/admin-branches.png)
+
+---
+
+### Admin – Operating Hours & Resource Availability
+Admins can manage branch operating hours, define recurring resource availability, and configure resource unavailability for specific dates and time ranges.
+
+![Admin operating hours and resources](screenshots/admin-operating-hours.png)
+
+---
+
 ## Testing
 
 - Unit test coverage: **84% line coverage**
