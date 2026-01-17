@@ -8,6 +8,7 @@ import branchmaster.repository.BranchRepository;
 import branchmaster.repository.entity.BranchEntity;
 import branchmaster.service.mapper.BranchMapper;
 import branchmaster.service.model.BranchDto;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -111,17 +112,18 @@ public class BranchService {
     return BranchMapper.INSTANCE.map(branchEntity);
   }
 
-  private Object getSnapshot(BranchEntity branchEntity) {
-    return Map.of(
-        "id", branchEntity.getId(),
-        "address", branchEntity.getAddress(),
-        "suburb", branchEntity.getSuburb(),
-        "city", branchEntity.getCity(),
-        "province", branchEntity.getProvince(),
-        "postalCode", branchEntity.getPostalCode(),
-        "active", branchEntity.getActive(),
-        "timeslotDuration", branchEntity.getTimeslotLength(),
-        "latitude", branchEntity.getLatitude(),
-        "longitude", branchEntity.getLongitude());
+  private Map<String, Object> getSnapshot(BranchEntity e) {
+    Map<String, Object> m = new LinkedHashMap<>();
+    m.put("id", e.getId());
+    m.put("address", e.getAddress());
+    m.put("suburb", e.getSuburb());
+    m.put("city", e.getCity());
+    m.put("province", e.getProvince());
+    m.put("postalCode", e.getPostalCode());
+    m.put("active", e.getActive());
+    m.put("timeslotDuration", e.getTimeslotLength());
+    m.put("latitude", e.getLatitude());
+    m.put("longitude", e.getLongitude());
+    return m;
   }
 }

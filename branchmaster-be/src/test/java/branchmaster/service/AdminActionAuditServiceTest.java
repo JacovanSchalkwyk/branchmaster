@@ -7,6 +7,7 @@ import branchmaster.audit.AdminActionAuditService;
 import branchmaster.audit.entity.ActionType;
 import branchmaster.audit.entity.AdminActionAuditEntity;
 import branchmaster.audit.repository.AdminActionAuditRepository;
+import branchmaster.security.StaffAuthUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
@@ -27,7 +28,7 @@ class AdminActionAuditServiceTest {
   @Test
   void log_savesAuditEntity_withSerializedParams() {
     Long staffId = 42L;
-    ActionType actionType = ActionType.OPERATING_HOURS_UPDATED;
+    ActionType actionType = ActionType.UPDATE_BRANCH_OPERATING_HOURS;
 
     Map<String, Object> params =
         Map.of(
@@ -38,7 +39,11 @@ class AdminActionAuditServiceTest {
     ArgumentCaptor<AdminActionAuditEntity> captor =
         ArgumentCaptor.forClass(AdminActionAuditEntity.class);
 
-    service.log(staffId, actionType, params);
+    try (MockedStatic<StaffAuthUtil> mocked = org.mockito.Mockito.mockStatic(StaffAuthUtil.class)) {
+      mocked.when(StaffAuthUtil::getStaffId).thenReturn(staffId);
+
+      service.log(actionType, params);
+    }
 
     verify(repo).save(captor.capture());
 
@@ -58,12 +63,16 @@ class AdminActionAuditServiceTest {
   @Test
   void log_allowsNullParams_andStoresNullJson() {
     Long staffId = 7L;
-    ActionType actionType = ActionType.BRANCH_UPDATED;
+    ActionType actionType = ActionType.UPDATE_BRANCH;
 
     ArgumentCaptor<AdminActionAuditEntity> captor =
         ArgumentCaptor.forClass(AdminActionAuditEntity.class);
 
-    service.log(staffId, actionType, null);
+    try (MockedStatic<StaffAuthUtil> mocked = org.mockito.Mockito.mockStatic(StaffAuthUtil.class)) {
+      mocked.when(StaffAuthUtil::getStaffId).thenReturn(staffId);
+
+      service.log(actionType, null);
+    }
 
     verify(repo).save(captor.capture());
 

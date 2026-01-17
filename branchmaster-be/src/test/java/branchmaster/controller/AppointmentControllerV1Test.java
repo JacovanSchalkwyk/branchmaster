@@ -95,7 +95,7 @@ class AppointmentControllerV1Test {
     CreateAppointmentRequest request =
         CreateAppointmentRequest.builder()
             .branchId(1L)
-            .appointmentDate(LocalDate.of(2026, 1, 10))
+            .appointmentDate(LocalDate.of(2027, 1, 10))
             .startTime(LocalTime.of(9, 0))
             .endTime(LocalTime.of(9, 30))
             .reason("Test reason")
@@ -121,7 +121,7 @@ class AppointmentControllerV1Test {
     CreateAppointmentRequest request =
         CreateAppointmentRequest.builder()
             .branchId(1L)
-            .appointmentDate(LocalDate.of(2026, 1, 10))
+            .appointmentDate(LocalDate.of(2027, 1, 10))
             .startTime(LocalTime.of(9, 0))
             .endTime(LocalTime.of(9, 30))
             .reason("Test reason")

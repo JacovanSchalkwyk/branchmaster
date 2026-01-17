@@ -12,6 +12,7 @@ import branchmaster.service.model.ResourceUnavailabilityDto;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -188,26 +189,28 @@ public class ResourceService {
     }
   }
 
-  private Object getSnapshot(ResourceAvailabilityEntity resourceAvailabilityEntity) {
-    return Map.of(
-        "id", resourceAvailabilityEntity.getId(),
-        "branchId", resourceAvailabilityEntity.getBranchId(),
-        "name", resourceAvailabilityEntity.getName(),
-        "startDate", resourceAvailabilityEntity.getStartDate(),
-        "endDate", resourceAvailabilityEntity.getEndDate(),
-        "startTime", resourceAvailabilityEntity.getStartTime(),
-        "endTime", resourceAvailabilityEntity.getEndTime(),
-        "dayOfWeek", resourceAvailabilityEntity.getDayOfWeek());
+  private Map<String, Object> getSnapshot(ResourceAvailabilityEntity e) {
+    Map<String, Object> m = new LinkedHashMap<>();
+    m.put("id", e.getId());
+    m.put("branchId", e.getBranchId());
+    m.put("name", e.getName());
+    m.put("startDate", e.getStartDate());
+    m.put("endDate", e.getEndDate());
+    m.put("startTime", e.getStartTime());
+    m.put("endTime", e.getEndTime());
+    m.put("dayOfWeek", e.getDayOfWeek());
+    return m;
   }
 
-  private Object getSnapshot(ResourceUnavailabilityEntity resourceUnavailabilityEntity) {
-    return Map.of(
-        "id", resourceUnavailabilityEntity.getId(),
-        "branchId", resourceUnavailabilityEntity.getBranchId(),
-        "date", resourceUnavailabilityEntity.getDate(),
-        "startTime", resourceUnavailabilityEntity.getStartTime(),
-        "endTime", resourceUnavailabilityEntity.getEndTime(),
-        "availableResourceId", resourceUnavailabilityEntity.getAvailableResourceId(),
-        "reason", resourceUnavailabilityEntity.getReason());
+  private Map<String, Object> getSnapshot(ResourceUnavailabilityEntity e) {
+    Map<String, Object> m = new LinkedHashMap<>();
+    m.put("id", e.getId());
+    m.put("branchId", e.getBranchId());
+    m.put("date", e.getDate());
+    m.put("startTime", e.getStartTime());
+    m.put("endTime", e.getEndTime());
+    m.put("availableResourceId", e.getAvailableResourceId());
+    m.put("reason", e.getReason());
+    return m;
   }
 }

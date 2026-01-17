@@ -21,7 +21,7 @@ public record CreateAppointmentRequest(
     @NotBlank String name) {
   @AssertTrue(message = "endTime must be after startTime")
   public boolean isEndAfterStart() {
-    if (startTime == null || endTime == null) return true; // let @NotNull handle it
+    if (startTime == null || endTime == null) return true;
     return endTime.isAfter(startTime);
   }
 }

@@ -245,7 +245,6 @@ class ResourceAdminControllerV1Test {
         .perform(get("/api/admin/resource/unavailable/10"))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-        // adjust field names if your mapper uses different ones
         .andExpect(jsonPath("$[0].id").value(100L))
         .andExpect(jsonPath("$[0].availableResourceId").value(1L))
         .andExpect(jsonPath("$[0].reason").value("Maintenance"));

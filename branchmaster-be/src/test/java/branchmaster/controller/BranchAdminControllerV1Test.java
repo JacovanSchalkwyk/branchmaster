@@ -163,11 +163,11 @@ class BranchAdminControllerV1Test {
 
     UpdateBranchOperatingHoursRequest req =
         UpdateBranchOperatingHoursRequest.builder()
-            // adjust these fields to match your real record/builder
             .id(10L)
             .dayOfWeek(1)
             .openingTime(LocalTime.of(9, 0))
             .closingTime(LocalTime.of(17, 0))
+            .closed(false)
             .build();
 
     mockMvc
@@ -192,6 +192,7 @@ class BranchAdminControllerV1Test {
             .dayOfWeek(1)
             .openingTime(LocalTime.of(9, 0))
             .closingTime(LocalTime.of(17, 0))
+            .closed(false)
             .build();
 
     mockMvc
@@ -260,6 +261,7 @@ class BranchAdminControllerV1Test {
             BranchDto.builder()
                 .id(1L)
                 .name("Updated Branch")
+                .address("Address")
                 .suburb("Suburb")
                 .city("Cape Town")
                 .province("WC")
@@ -271,10 +273,15 @@ class BranchAdminControllerV1Test {
         UpdateBranchRequest.builder()
             .id(1L)
             .name("Updated Branch")
+            .address("Address")
             .suburb("Suburb")
             .city("Cape Town")
             .province("WC")
             .postalCode("8000")
+            .active(true)
+            .timeslotLength(30)
+            .latitude(-31D)
+            .longitude(-30D)
             .build();
 
     mockMvc
@@ -296,10 +303,15 @@ class BranchAdminControllerV1Test {
         UpdateBranchRequest.builder()
             .id(1L)
             .name("Updated Branch")
+            .address("Address")
             .suburb("Suburb")
             .city("Cape Town")
             .province("WC")
             .postalCode("8000")
+            .active(true)
+            .timeslotLength(30)
+            .latitude(-31D)
+            .longitude(-30D)
             .build();
 
     mockMvc
@@ -327,11 +339,16 @@ class BranchAdminControllerV1Test {
     CreateBranchRequest req =
         CreateBranchRequest.builder()
             .name("New Branch")
+            .address("Address")
             .suburb("Suburb")
             .city("Cape Town")
             .province("WC")
             .postalCode("8000")
             .country("South Africa")
+            .active(true)
+            .timeslotLength(30)
+            .latitude(-31D)
+            .longitude(-30D)
             .build();
 
     mockMvc
@@ -352,11 +369,16 @@ class BranchAdminControllerV1Test {
     CreateBranchRequest req =
         CreateBranchRequest.builder()
             .name("New Branch")
+            .address("Address")
             .suburb("Suburb")
             .city("Cape Town")
             .province("WC")
             .postalCode("8000")
             .country("South Africa")
+            .active(true)
+            .timeslotLength(30)
+            .latitude(-31D)
+            .longitude(-30D)
             .build();
 
     mockMvc
@@ -369,7 +391,6 @@ class BranchAdminControllerV1Test {
 
   @Test
   void getBookingsForBranchDay_returns200_andJsonArray() throws Exception {
-    // If your AppointmentAdminV1Mapper changes field names, adjust jsonPath accordingly.
     when(appointmentService.getBookingsForBranchDay(anyLong(), any()))
         .thenReturn(
             List.of(
@@ -390,7 +411,6 @@ class BranchAdminControllerV1Test {
         .perform(get("/api/admin/branch/1/appointments?date=2026-01-10"))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-        // Adjust these to your AppointmentResponse fields from the mapper
         .andExpect(jsonPath("$[0].appointmentDate").value("2026-01-10"));
   }
 

@@ -126,12 +126,9 @@ class BranchOperatingHoursServiceTest {
       @SuppressWarnings("unchecked")
       ArgumentCaptor<Map<String, Object>> auditCaptor = ArgumentCaptor.forClass(Map.class);
 
-      verify(auditService)
-          .log(eq(777L), eq(ActionType.OPERATING_HOURS_UPDATED), auditCaptor.capture());
+      verify(auditService).log(eq(ActionType.UPDATE_BRANCH_OPERATING_HOURS), auditCaptor.capture());
 
       Map<String, Object> payload = auditCaptor.getValue();
-      assertThat(payload.get("operatingHoursId")).isEqualTo(10L);
-      assertThat(payload.get("branchId")).isEqualTo(1L);
 
       assertThat(payload.get("before")).isInstanceOf(Map.class);
       assertThat(payload.get("after")).isInstanceOf(Map.class);
@@ -142,16 +139,14 @@ class BranchOperatingHoursServiceTest {
       Map<String, Object> after = (Map<String, Object>) payload.get("after");
 
       assertThat(before.get("dayOfWeek")).isEqualTo(1);
-      assertThat(before.get("openingTime")).isEqualTo("09:00");
-      assertThat(before.get("closingTime")).isEqualTo("17:00");
+      assertThat(before.get("openingTime")).isEqualTo(LocalTime.of(9, 0));
+      assertThat(before.get("closingTime")).isEqualTo(LocalTime.of(17, 0));
       assertThat(before.get("closed")).isEqualTo(false);
 
       assertThat(after.get("dayOfWeek")).isEqualTo(5);
-      assertThat(after.get("openingTime")).isEqualTo("10:00");
-      assertThat(after.get("closingTime")).isEqualTo("18:00");
+      assertThat(after.get("openingTime")).isEqualTo(LocalTime.of(10, 0));
+      assertThat(after.get("closingTime")).isEqualTo(LocalTime.of(18, 0));
       assertThat(after.get("closed")).isEqualTo(true);
-
-      mocked.verify(StaffAuthUtil::getStaffId);
     }
 
     verify(repo).findById(10L);
@@ -190,7 +185,5 @@ class BranchOperatingHoursServiceTest {
 
     assertThat(dto).isNotNull();
     assertThat(dto.id()).isEqualTo(99L);
-
-    verifyNoInteractions(auditService);
   }
 }

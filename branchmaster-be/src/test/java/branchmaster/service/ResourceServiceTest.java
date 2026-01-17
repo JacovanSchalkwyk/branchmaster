@@ -3,6 +3,7 @@ package branchmaster.service;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import branchmaster.audit.AdminActionAuditService;
 import branchmaster.repository.ResourceAvailabilityRepository;
 import branchmaster.repository.ResourceUnavailabilityRepository;
 import branchmaster.repository.entity.ResourceAvailabilityEntity;
@@ -25,6 +26,7 @@ class ResourceServiceTest {
   @Mock ResourceUnavailabilityRepository unavailabilityRepo;
 
   @InjectMocks ResourceService service;
+  @Mock AdminActionAuditService auditService;
 
   @Test
   void getAvailableResourcesForBranch_returnsEmptyList_whenRepoReturnsEmpty() {

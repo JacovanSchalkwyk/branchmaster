@@ -29,11 +29,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
   }
 
-  @ExceptionHandler(IllegalArgumentException.class)
-  public ResponseEntity<?> badRequest(IllegalArgumentException ex) {
-    return ResponseEntity.badRequest().body(java.util.Map.of("error", ex.getMessage()));
-  }
-
   @ExceptionHandler(DataIntegrityViolationException.class)
   public ResponseEntity<Object> handleDataIntegrityViolation(
       final DataIntegrityViolationException ex, final WebRequest request) {

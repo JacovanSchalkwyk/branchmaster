@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import branchmaster.admin.model.CreateBranchRequest;
 import branchmaster.admin.model.UpdateBranchRequest;
+import branchmaster.audit.AdminActionAuditService;
 import branchmaster.repository.BranchRepository;
 import branchmaster.repository.entity.BranchEntity;
 import branchmaster.service.model.BranchDto;
@@ -21,6 +22,7 @@ class BranchServiceTest {
   @Mock BranchRepository branchRepository;
 
   @InjectMocks BranchService service;
+  @Mock AdminActionAuditService auditService;
 
   @Test
   void getAllOpenBranches_throws_whenRepoReturnsEmpty() {
