@@ -165,6 +165,30 @@ The following Entity Relationship Diagram (ERD) illustrates the core domain mode
 
 ---
 
+## System Architecture
+
+```mermaid
+flowchart LR
+  Browser --> Frontend[React Frontend]
+  Frontend --> Backend[Spring Boot Backend]
+  Backend --> DB[(PostgreSQL)]
+  Frontend --> Maps[Google Maps]
+
+  subgraph Frontend
+    UI[Public Booking UI]
+    AdminUI[Admin Portal]
+  end
+
+  subgraph Backend
+    API[REST APIs]
+    Auth[JWT Authentication]
+    Audit[Audit Logging]
+  end
+```
+
+
+---
+
 ## Testing
 
 - Unit test coverage: **84% line coverage**
