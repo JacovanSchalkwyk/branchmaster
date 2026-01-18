@@ -157,6 +157,14 @@ Admins can manage branch operating hours, define recurring resource availability
 
 ---
 
+## Database Design (ERD)
+
+The following Entity Relationship Diagram (ERD) illustrates the core domain model and relationships between branches, resources, operating hours, and appointments.
+
+![Database ERD](screenshots/branchmaster-erd.png)
+
+---
+
 ## Testing
 
 - Unit test coverage: **84% line coverage**
