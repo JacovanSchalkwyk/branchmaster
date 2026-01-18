@@ -455,7 +455,7 @@ export default function AdminPage() {
                         primary={<Typography sx={{ fontWeight: 750 }}>{b.name}</Typography>}
                         secondary={
                           <Typography variant="caption" color="text.secondary">
-                            {b.address}
+                            {b.friendlyAddress ? b.friendlyAddress : b.address }
                           </Typography>
                         }
                       />
